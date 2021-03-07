@@ -6,7 +6,10 @@ namespace Kalkulator
     {
         double w = 0;
         public string strW { get; set; }
+        public string strData { get; set; }
+        private bool percent = false;
 
+        public void Percent(bool p) { percent = p; }
         public double getW() { return w; }
         public void setW()
         {
@@ -18,11 +21,15 @@ namespace Kalkulator
         }
         public void setClearW(double W) { w = W; }
 
-        public void setStrW(string W) { strW += W; }
+        public void setStrW(string W) { strW += W; strData += W; }
         public double getStrW() { return double.Parse(strW); }
         public void clearStrW() { strW = null; }
-        public string delStrW()
+        public string delStrWPlus() //poprawic ujemne liczby
         {
+            if (double.Parse(strW) < 0)
+            {
+                strW = Negate(double.Parse(strW)).ToString();
+            }
             if (strW.Length > 1)
             {
                 strW = strW.Remove(strW.Length - 1, 1);
@@ -31,28 +38,61 @@ namespace Kalkulator
             {
                 strW = "0";
             }
-            //w = double.Parse(strW);
             return strW;
         }
 
+        private double fPercent(double a)
+        {
+            if (percent == true)
+            {
+                a = a / 100;
+                percent = false;
+            }
+            return a;
+        }
+
         public double sum(double a)
-        { return w += a; }
+        {
+           a=fPercent(a);
+            return w += a;
+        }
         public double difference(double a)
-        { return w -= a; }
+        {
+            a = fPercent(a);
+            return w -= a;
+        }
         public double Multiple(double a)
-        { return w *= a; }
+        {
+            a = fPercent(a);
+            return w *= a;
+        }
         public double Division(double a)
-        { return w /= a; }
-        public double percent(double a)
-        { return w *= a * 100; }
+        {
+            a = fPercent(a);
+            return w /= a;
+        }
         public double Sqrt(double a)
-        { return Math.Sqrt(a); }
+        { 
+            return Math.Sqrt(a);
+        }
         public double Revers(double a)
-        { return 1 / a; }
+        {
+            return 1 / a;
+        }
         public double Square(double a)
-        { return a * a; }
+        {
+            return a * a;
+        }
         public double Negate(double a)
-        { return -w; }
+        {
+            return -a;
+        }
+        public void Data(string icon)
+        {
+            if (strData != null)
+            if (strData.ToCharArray()[strData.Length-1].ToString() != icon)
+            strData += icon;
+        }
 
     }
 }
